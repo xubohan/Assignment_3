@@ -1,6 +1,12 @@
+import com.sun.source.tree.WhileLoopTree;
+
+import java.awt.print.Book;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,7 +14,7 @@ import java.util.Objects;
  * Class responsible for loading
  * book data from file.
  */
-public class LibraryFileLoader {
+public class LibraryFileLoader{
 
     /**
      * Contains all lines read from a book data file using
@@ -23,9 +29,7 @@ public class LibraryFileLoader {
     private List<String> fileContent;
 
     /** Create a new loader. No file content has been loaded yet. */
-    public LibraryFileLoader() { 
-        fileContent = null;
-    }
+    public LibraryFileLoader() { fileContent = null;}
 
     /**
      * Load all lines from the specified book data file and
@@ -65,10 +69,32 @@ public class LibraryFileLoader {
      * 
      * @return books parsed from the previously loaded book data or an empty list
      * if no book data has been loaded yet.
-     * @throws UnsupportedOperationException Not implemented yet!
+     * @throws NullPointerException When the content is null
      */
     public List<BookEntry> parseFileContent() {
-        // TODO Remove exception and implement me
-        throw new UnsupportedOperationException("Parsing library files is not yet implemented.");
+        if (fileContent == null || fileContent.equals("")) {
+            try {
+                throw new NullPointerException();
+            } catch (NullPointerException e) {
+                System.err.println("ERROR: No content loaded before parsing.");
+                return new ArrayList<BookEntry>();
+            }
+        }
+
+        Iterator<String> iterator = fileContent.iterator();
+        ArrayList<BookEntry> booksHere = new ArrayList<>();
+        int index = 0;
+        while (iterator.hasNext()) {
+            if (index == 0) {
+                index++;
+                continue;
+            }
+            String[] tempSave = iterator.next().split(",");
+            String[] authors = tempSave[1].split("-");
+            booksHere.add(new BookEntry(tempSave[0],authors,Float.parseFloat(tempSave[2]),
+                    tempSave[3],Integer.parseInt(tempSave[4])));
+        }
+        return booksHere;
     }
+
 }

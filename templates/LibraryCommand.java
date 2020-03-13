@@ -4,7 +4,7 @@ import java.util.Objects;
  * Super class for all commands which ties
  * command creation and initialisation using arguments together.
  */
-public abstract class LibraryCommand {
+public abstract class LibraryCommand{
 
 	/** This commands specific type. */
 	private CommandType type;

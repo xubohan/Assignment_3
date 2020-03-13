@@ -5,7 +5,7 @@ import java.util.Scanner;
  * runs the main loop and handles user input
  * and high level command creation and execution.
  */
-public class LibraryBrowser {
+public class LibraryBrowser{
 
     /** Book data currently loaded. */
     private final LibraryData data;
