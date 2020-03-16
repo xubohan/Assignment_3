@@ -12,18 +12,17 @@ public class SearchCmd extends LibraryCommand{
     public void execute(LibraryData data) {
         Objects.requireNonNull(data, "Given input argument must not be null.");
 
-        List<BookEntry> dataSave = data.getBookData();
-        if (dataSave.contains(validCollect)) {
-            Iterator<BookEntry> it = data.getBookData().iterator();
-            while (it.hasNext()){
-                if (it.next().getTitle().contains(validCollect)) {
-                    System.out.println(it.next());
-                }
-            }
-        } else {
-            System.out.format("No hits found for search term: %s\n", validCollect);
-        }
+        Iterator<BookEntry> it = data.getBookData().iterator();
 
+        while (it.hasNext()) {
+            if (it.next().getTitle().toUpperCase().contains(validCollect.toUpperCase())) {
+                System.out.println(it.next());
+            }
+
+            if (!it.hasNext()) {
+                System.out.format("No hits found for search term: %s", validCollect);
+            }
+        }
     }
 
     @Override
