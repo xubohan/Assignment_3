@@ -139,22 +139,28 @@ public class BookEntry {
         result = 31 * result + Arrays.hashCode(authors);
         return result;
     }
-    //    @Override
-//    public int hashCode() {
-//        // Generate a hashcode by using own algorithm
-//        return (this.title.hashCode() + this.authors.hashCode() +
-//                this.ISBN.hashCode() - this.pages) * ((int)this.rating +1);
-//    }
+
 
     @Override
     public String toString(){
         // Generate a specific layout
-        return  getTitle() +
-                "by "+ getAuthors()[0] +", " +
-                getAuthors()[1] + "\n"+
-                "Rating: " + getRating() + "\n" +
+        return  getTitle() + "\n" +
+                "by "+ pureString(getAuthors()) +"\n"+
+                "Rating: " + String.format("%.2f",getRating()) + "\n" +
                 "ISBN: " + getISBN() + "\n" +
                 getPages() + " pages";
+    }
+
+    private String pureString(String[] authors) {
+        String temp = "";
+        for (int i = 0; i < authors.length; i++) {
+            if (i == authors.length - 1) {
+                temp += authors[i];
+            } else {
+                temp += authors[i] + ", ";
+            }
+        }
+        return temp;
     }
 
     /**
