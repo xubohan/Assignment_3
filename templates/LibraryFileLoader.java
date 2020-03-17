@@ -72,29 +72,39 @@ public class LibraryFileLoader{
      * @throws NullPointerException When the content is null
      */
     public List<BookEntry> parseFileContent() {
-        if (fileContent == null || fileContent.equals("")) {
+        if (fileContent.isEmpty()) {
             try {
                 throw new NullPointerException();
             } catch (NullPointerException e) {
                 System.err.println("ERROR: No content loaded before parsing.");
-                return new ArrayList<BookEntry>();
+                return new ArrayList<>();
             }
         }
-
+        fileContent = skipFirstLine(fileContent);
         Iterator<String> iterator = fileContent.iterator();
         ArrayList<BookEntry> booksHere = new ArrayList<>();
-        int index = 0;
         while (iterator.hasNext()) {
-            if (index == 0) {
-                index++;
-                continue;
-            }
-            String[] tempSave = iterator.next().split(",");
-            String[] authors = tempSave[1].split("-");
-            booksHere.add(new BookEntry(tempSave[0],authors,Float.parseFloat(tempSave[2]),
-                    tempSave[3],Integer.parseInt(tempSave[4])));
+                String[] tempSave = iterator.next().split(",");
+                String[] authors = tempSave[1].split("-");
+                booksHere.add(new BookEntry(tempSave[0], authors,
+                        Float.parseFloat(tempSave[2]),
+                        tempSave[3], Integer.parseInt(tempSave[4])));
         }
         return booksHere;
+    }
+
+    private ArrayList<String> skipFirstLine (List<String> arr) {
+        int i = 0;
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        for (String arr1 : arr) {
+            if (i == 0) {
+                i ++;
+            } else {
+                arrayList.add(arr1);
+            }
+        }
+        return arrayList;
     }
 
 }

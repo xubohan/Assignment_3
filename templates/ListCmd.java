@@ -7,7 +7,6 @@ public class ListCmd extends LibraryCommand {
     private String keySave;
     private final String longWord = "long";
     private final String shortWord = "short";
-    private final String nullWord = null;
 
     public ListCmd(String argumentInput) {
         super(CommandType.LIST, argumentInput);
@@ -38,14 +37,11 @@ public class ListCmd extends LibraryCommand {
 
     @Override
     protected boolean parseArguments(String argumentInput) {
-        if (!shortWord.equals(argumentInput) || !longWord.equals(argumentInput) ||
-                argumentInput != nullWord) {
-            return false;
-        } else {
+        if (shortWord.equals(argumentInput) || argumentInput.equals(longWord)
+            || argumentInput.isBlank()) {
             keySave = argumentInput;
             return true;
         }
+            return false;
     }
-
-
 }

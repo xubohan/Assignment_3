@@ -1,8 +1,13 @@
+import java.security.Key;
 import java.util.*;
 
 public class GroupCmd extends LibraryCommand{
-    private String authorName = "AUTHOR";
-    private String titleName = "TITLE";
+    private final String authorName = "AUTHOR";
+    private final String titleName = "TITLE";
+    private ArrayList<String> key = new ArrayList<>();
+    private ArrayList<String> value = new ArrayList<>();
+    private ArrayList<BookEntry> setData = new ArrayList<>();
+
     private String dataSave;
 
     public GroupCmd(String argumentInput) {
@@ -14,96 +19,96 @@ public class GroupCmd extends LibraryCommand{
         Objects.requireNonNull(data, "Given input argument must not be null.");
         if (data.getBookData().isEmpty()) {
             System.out.println("The library has no book entries.");
+            return;
         }
 
         System.out.format("Grouped data by %s\n",dataSave);
         Iterator<BookEntry> it = data.getBookData().iterator();
-        if (dataSave.equals(titleName)) {
-            HashMap<String, String> hm1 = new HashMap<>();
-            ArrayList<String> arrayList = new ArrayList<>();
-            ArrayList<String> valueRecord = new ArrayList<>();
-            while (it.hasNext()) {
-                String tempTitle = it.next().getTitle();
-                char letter = tempTitle.charAt(0);
-                if (Character.isAlphabetic(letter)) {
-                    hm1.put(tempTitle, String.valueOf(letter).toUpperCase());
-                    valueRecord.add(String.valueOf(letter).toUpperCase());
-                }
-                if (Character.isDigit(letter)) {
-                    arrayList.add(tempTitle);
-                }
-                    //最后一个如果不是 数字或则字母
-                    //写完再处理
-            }
-            printValue(hm1, arrayList, valueRecord);
 
-        }
-        if (dataSave.equals(authorName)) {
-            ArrayList<String> name = new ArrayList<>();
-            while (it.hasNext()) {
-                for (String authorName1 :it.next().getAuthors()) {
-                    name.add(authorName1);
-                }
-            }
-            name = noDuplicate(name);
-            for (String name1 : name) {
-                System.out.format("## %s\n",name1);
-                ArrayList<String> temperSave = new ArrayList<>();
+        switch (dataSave) {
+            case titleName:
+                ArrayList<String> numberBook = new ArrayList<>();
+                String numb = null;
                 while (it.hasNext()) {
-                    if (Arrays.asList(it.next().getAuthors()).contains(name1)) {
-                        temperSave.add(it.next().getTitle());
+                    String record = it.next().getTitle();
+                    char firstLetter = record.charAt(0);
+                    if (Character.isLetter(firstLetter)) {
+                        key.add(String.valueOf(firstLetter).toUpperCase());
+                        value.add(record);
+                    } else if (Character.isDigit(firstLetter)) {
+                        numb = "[0-9]";
+                        numberBook.add(record);
                     }
                 }
-                Collections.sort(temperSave);
-                for (String tempUse:temperSave){
-                    System.out.format("    %s\n",tempUse);
+                key = noDuplicate(key);
+                Collections.sort(key);
+                for (String key1 : key) {
+                    System.out.println("## " + key1);
+                    for (String value1 : value) {
+                        String firstLetter = String.valueOf(value1.charAt(0));
+                        if (firstLetter.equals(key1)) {
+                            System.out.println("   " + value1);
+                        }
+                    }
                 }
-            }
-        }
-    }
-
-    private void printValue(HashMap<String, String> hm1, ArrayList<String> arrayList, ArrayList<String> valueRecord) {
-        for (String value : noDuplicate(valueRecord)) {
-            System.out.format("## %s\n",value);
-            ArrayList<String> record1 = new ArrayList<>();
-            for (String key: hm1.keySet()) {
-                if (value.equals(hm1.get(key))) {
-                    record1.add(key);
+                if (numb != null) {
+                    System.out.println("## " + numb);
+                    for (String nb: numberBook) {
+                        System.out.println("   " + nb);
+                    }
                 }
-            }
-            Collections.sort(record1);
-            for (String record2 : record1) {
-                System.out.format("    %s\n",record2);
-            }
-        }
-        Collections.sort(arrayList);
-
-        System.out.println("## [0-9]");
-        for (String temp : arrayList) {
-            System.out.format("    %s\n",temp);
+                break;
+            case authorName:
+                while (it.hasNext()) {
+                    BookEntry dataRec = it.next();
+                    String[] name = dataRec.getAuthors();
+                    setData.add(dataRec);
+                    for (String nam1 : name) {
+                        key.add(nam1);
+                    }
+                }
+                key = noDuplicate(key);
+                Collections.sort(key);
+                for (String key1: key) {
+                    System.out.println("## " + key1);
+                    for (BookEntry setData1 : setData) {
+                        if (Arrays.asList(setData1.getAuthors()).contains(key1)) {
+                            value.add(setData1.getTitle());
+                        }
+                    }
+                    Collections.sort(value);
+                    for (String value1: value) {
+                        System.out.println("   " + value1);
+                    }
+                    value.clear();
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     protected boolean parseArguments(String argumentInput) {
-        boolean check = false;
         if (argumentInput.equals(authorName)
                 || argumentInput.equals(titleName)) {
             dataSave = argumentInput;
-            check = true;
+            return true;
         }
-        return check;
+        return false;
     }
 
     private ArrayList<String> noDuplicate(ArrayList<String> arr) {
         Iterator<String> iterator = arr.iterator();
         ArrayList<String> simple = new ArrayList<>();
         while (iterator.hasNext()) {
-            if (!simple.contains(iterator.next())) {
-                simple.add(iterator.next());
+            String temp = iterator.next();
+            if (!simple.contains(temp)) {
+                simple.add(temp);
             }
         }
         Collections.sort(simple);
         return simple;
      }
+
 }

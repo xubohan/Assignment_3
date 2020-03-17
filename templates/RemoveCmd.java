@@ -2,9 +2,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class RemoveCmd extends LibraryCommand{
-    private String authorName = "AUTHOR";
-    private String titleName = "TITLE";
+public class RemoveCmd extends LibraryCommand {
+    private final String authorName = "AUTHOR";
+    private final String titleName = "TITLE";
 
     private String sort;
     private String stringValue;
@@ -22,7 +22,8 @@ public class RemoveCmd extends LibraryCommand{
         if (sort.equals(authorName)) {
             int count = 0;
             while (bookList.hasNext()) {
-                    if (Arrays.asList(bookList.next().getAuthors()).contains(stringValue)) {
+                String[] record = bookList.next().getAuthors();
+                    if (Arrays.asList(record).contains(stringValue)) {
                         bookList.remove();
                         count++;
                     }
@@ -30,36 +31,80 @@ public class RemoveCmd extends LibraryCommand{
             System.out.format("%d books removed for author: <remove value>\n", count);
         }
         if (sort.equals(titleName)) {
+            int rec = data.getBookData().size();
             while (bookList.hasNext()) {
-                if (bookList.next().getTitle().equals(stringValue)) {
+                String tempSave = bookList.next().getTitle();
+                if (tempSave.equals(stringValue)) {
+                    bookList.remove();
                     System.out.format("%s: removed successfully.\n", stringValue);
                 }
-
-                if (!bookList.hasNext()) {
-                    System.out.format("%s: not found.\n", stringValue);
-                }
+            }
+            if (rec == data.getBookData().size()) {
+                System.out.format("%s: not found.\n", stringValue);
             }
         }
     }
 
     @Override
     protected boolean parseArguments(String argumentInput) {
-        boolean check = false;
-        if (argumentInput == null) {
-            check = false;
-        }
-        String[] dete = argumentInput.split(" ");
-        if (dete[0].contains(authorName)) {
-            sort = authorName;
-            stringValue = argumentInput.replaceFirst(authorName, "").trim();
-            check = true;
+
+        if (argumentInput.isEmpty()) {
+            try {
+                throw new NullPointerException();
+            } catch (NullPointerException e) {
+                return false;
+            }
         }
 
-        if (dete[0].contains(titleName)) {
+        String authorCheck = argumentInput.substring(0,authorName.length());
+        String titleCheck = argumentInput.substring(0,titleName.length());
+
+        if (authorCheck.equals(authorName)) {
+            sort = authorName;
+            stringValue = argumentInput.replaceFirst(authorName, "").trim();
+            if (stringValue.isBlank()) {
+                return false;
+            }
+            return true;
+        } else if (titleCheck.equals(titleName)) {
             sort = titleName;
             stringValue = argumentInput.replaceFirst(titleName, "").trim();
-            check = true;
+            if (stringValue.isBlank()) {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
         }
-        return check;
     }
 }
+//
+//    @Override
+//    protected boolean parseArguments(String argumentInput) {
+////        if (argumentInput.isEmpty()) {
+////            try {
+////                throw new IllegalArgumentException();
+////            } catch (IllegalArgumentException e) {
+////                return false;
+////            }
+////        }
+//
+//        if (argumentInput.substring(0,authorName.length()).equals(authorName)) {
+//            sort = authorName;
+//            stringValue = argumentInput.replaceFirst(authorName, "").trim();
+//            if (stringValue.isEmpty()) {
+//                return false;
+//            }
+//            return true;
+//        } else if (argumentInput.substring(0,titleName.length()).equals(titleName)) {
+//            sort = titleName;
+//            stringValue = argumentInput.replaceFirst(titleName, "").trim();
+//            if (stringValue.isEmpty()) {
+//                return false;
+//            }
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//}

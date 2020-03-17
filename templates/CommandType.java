@@ -4,7 +4,7 @@ public enum CommandType {
     EXIT,
     ADD,
     SEARCH,
-    LIST,
+    LIST ,
     REMOVE,
     GROUP
 }

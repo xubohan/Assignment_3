@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class AddCmdBasicTest extends CommandTest {
 
-    private static final String TEST_PATH = "booksTestData01.csv";
+    private static final String TEST_PATH = "data/booksTestData01.csv";
 
     @Override
     protected CommandType getCmdType() {

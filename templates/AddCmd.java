@@ -6,14 +6,7 @@ public class AddCmd extends LibraryCommand{
     private final String suffix = ".csv";
     private String argumentInput;
 
-    /**
-     * Create the specified command and initialise it with
-     * the given command argument.
-     *
-     * @param argumentInput argument input as expected by the extending subclass.
-     * @throws IllegalArgumentException if given arguments are invalid
-     * @throws NullPointerException     if any of the given parameters are null.
-     */
+
     public AddCmd(String argumentInput) {
         super(CommandType.ADD, argumentInput);
     }
@@ -21,36 +14,36 @@ public class AddCmd extends LibraryCommand{
     @Override
     public void execute(LibraryData data) {
         Objects.requireNonNull(data,"Given input argument must not be null.");
-        LibraryData ld = new LibraryData();
-        ld.loadData(Path.of(argumentInput));
+
+        data.loadData(Path.of(argumentInput));
+
     }
 
     @Override
     protected boolean parseArguments(String argumentInput) {
-
         if (argumentInput == null)  {
             try {
                 throw new NullPointerException("Given input argument must not be null.");
-            }
-            catch (NullPointerException e){
-                e.printStackTrace();
+            } catch (NullPointerException e){
                 return false;
             }
         }
 
-        if(!Path.of(argumentInput).toFile().exists()) {
+        if (argumentInput.length() < 5) {
             try {
-                throw new NoSuchFieldException("Given input argument must not be a valid address.");
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
+                throw new StringIndexOutOfBoundsException("It is out of bound");
+            } catch (StringIndexOutOfBoundsException e) {
                 return false;
             }
         }
 
         if (!argumentInput.substring(argumentInput.length() - suffix.length()).equals(suffix)){
-            throw new IllegalArgumentException("Invalid argument for ADD command");
+            try {
+                throw new IllegalArgumentException("Invalid argument for ADD command");
+            } catch (IllegalArgumentException e) {
+                return false;
+            }
         }
-
         this.argumentInput = argumentInput;
         return true;
     }
