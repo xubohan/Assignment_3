@@ -28,7 +28,7 @@ public class RemoveCmd extends LibraryCommand {
                         count++;
                     }
             }
-            System.out.format("%d books removed for author: <remove value>\n", count);
+            System.out.format("%d books removed for author: %s\n", count, stringValue);
         }
         if (sort.equals(titleName)) {
             int rec = data.getBookData().size();
@@ -78,33 +78,4 @@ public class RemoveCmd extends LibraryCommand {
         }
     }
 }
-//
-//    @Override
-//    protected boolean parseArguments(String argumentInput) {
-////        if (argumentInput.isEmpty()) {
-////            try {
-////                throw new IllegalArgumentException();
-////            } catch (IllegalArgumentException e) {
-////                return false;
-////            }
-////        }
-//
-//        if (argumentInput.substring(0,authorName.length()).equals(authorName)) {
-//            sort = authorName;
-//            stringValue = argumentInput.replaceFirst(authorName, "").trim();
-//            if (stringValue.isEmpty()) {
-//                return false;
-//            }
-//            return true;
-//        } else if (argumentInput.substring(0,titleName.length()).equals(titleName)) {
-//            sort = titleName;
-//            stringValue = argumentInput.replaceFirst(titleName, "").trim();
-//            if (stringValue.isEmpty()) {
-//                return false;
-//            }
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//}
+
