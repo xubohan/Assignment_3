@@ -72,7 +72,7 @@ public class LibraryFileLoader{
      * @throws NullPointerException When the content is null
      */
     public List<BookEntry> parseFileContent() {
-        if (fileContent.isEmpty()) {
+        if (fileContent == null) {
             try {
                 throw new NullPointerException();
             } catch (NullPointerException e) {
