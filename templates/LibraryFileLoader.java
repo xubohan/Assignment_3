@@ -83,6 +83,7 @@ public class LibraryFileLoader{
         fileContent = skipFirstLine(fileContent);
         Iterator<String> iterator = fileContent.iterator();
         ArrayList<BookEntry> booksHere = new ArrayList<>();
+
         while (iterator.hasNext()) {
                 String[] tempSave = iterator.next().split(",");
                 String[] authors = tempSave[1].split("-");
@@ -93,14 +94,18 @@ public class LibraryFileLoader{
         return booksHere;
     }
 
+    /**
+     * a helper function for skipping reading first line in file
+     * @param arr original file
+     * @return skipping first line and remaining parts are the same
+     */
     private ArrayList<String> skipFirstLine (List<String> arr) {
         int i = 0;
         ArrayList<String> arrayList = new ArrayList<>();
 
         for (String arr1 : arr) {
-            if (i == 0) {
-                i ++;
-            } else {
+            if (i == 0) { i ++; }
+            else {
                 arrayList.add(arr1);
             }
         }

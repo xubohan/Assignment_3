@@ -21,7 +21,7 @@ public class BookEntry {
     private int pages;
 
     /**
-     * This constructor is for recording the input and transit to private fields
+     * this constructor is for recording the input and transit to private fields
      * @param title to record the title of the book
      * @param authors to record the author or authors of the book
      * @param rating to record a rating between 0 and 5
@@ -40,14 +40,8 @@ public class BookEntry {
         this.pages = pages;
     }
 
-    /** Default Constructor **/
-    public BookEntry(){
-        // Nothing to do here
-        // Keep it empty
-    }
-
     /**
-     * A method to get book name
+     * a method to get book name
      * @return private instance field, title.
      */
     public String getTitle(){
@@ -55,7 +49,7 @@ public class BookEntry {
     }
 
     /**
-     * A method to get author name
+     * a method to get author name
      * @return private instance field, author.
      */
     public String[] getAuthors(){
@@ -63,7 +57,7 @@ public class BookEntry {
     }
 
     /**
-     * A method to get rating number
+     * a method to get rating number
      * @return private instance field, rating.
      */
     public float getRating() {
@@ -71,7 +65,7 @@ public class BookEntry {
     }
 
     /**
-     * A method to get ISBN number
+     * a method to get ISBN number
      * @return private instance field, ISBN.
      */
     public String getISBN() {
@@ -79,42 +73,18 @@ public class BookEntry {
     }
 
     /**
-     * A method to get page number
+     * a method to get page number
      * @return private instance field, pages.
      */
     public int getPages() {
         return this.pages;
     }
 
-//    /**
-//     * This equal method is for comparing the input and target values
-//     * @param title compare with the title of the book
-//     * @param authors compare with the author or authors of the book
-//     * @param rating compare with a rating between 0 and 5
-//     * @param ISBN compare with an ISBN number
-//     * @param pages compare with the number of pages
-//     * @return if fives fields are the same, it will return true.
-//     */
-//    public boolean equals (String title, String[] authors,
-//                          float rating, String ISBN, int pages) {
-//        exceptionCollection (title, authors, rating, ISBN, pages);
-//
-//        // Comparing with inferences
-//        if (this.title == title && this.rating == rating && this.authors == authors
-//            && this.ISBN == ISBN && this.pages == pages) {
-//            return true;
-//        }
-//
-//        // This is for comparing with target value
-//        if (!this.title.equals(title) || this.rating != rating
-//            || !this.ISBN.equals(ISBN) || this.pages != pages
-//                || this.authors.length != authors.length) {
-//            return false;
-//        }
-//        // Comparing with two String arrays, they are equal or not
-//        return Arrays.equals(this.authors, authors);
-//    }
-
+    /**
+     * determining two sets of data are same or not
+     * @param o any object
+     * @return if it is equal it will return true
+     */
     @Override
     public boolean equals(Object o) {
         // Comparing values by using Intellij Idea template
@@ -132,6 +102,10 @@ public class BookEntry {
                 ISBN.equals(bookEntry.ISBN);
     }
 
+    /**
+     * hashcode function
+     * @return specific number
+     */
     @Override
     public int hashCode() {
         // Generate a hashcode by using Intellij Idea template
@@ -140,7 +114,10 @@ public class BookEntry {
         return result;
     }
 
-
+    /**
+     * change data type to String
+     * @return String in specific form
+     */
     @Override
     public String toString(){
         // Generate a specific layout
@@ -150,6 +127,12 @@ public class BookEntry {
                 "ISBN: " + getISBN() + "\n" +
                 getPages() + " pages";
     }
+
+    /**
+     * this method is for transforming String Arrays to String
+     * @param authors authors of the book
+     * @return a single line String
+     */
 
     private String pureString(String[] authors) {
         String temp = "";
@@ -164,7 +147,7 @@ public class BookEntry {
     }
 
     /**
-     * This is helper function to detect potential exceptions
+     * this is helper function to detect potential exceptions
      * @param title the title of the book
      * @param authors the author or authors of the book
      * @param rating a rating between 0 and 5
@@ -178,6 +161,7 @@ public class BookEntry {
         Objects.requireNonNull(rating, "This is invalid input.");
         Objects.requireNonNull(ISBN, "This is invalid input.");
         Objects.requireNonNull(pages, "This is invalid input.");
+
         // This is for determining value in the bound
         if (rating < 0 || rating > 5) {
             throw new IllegalArgumentException("This is invalid input.");
